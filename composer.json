@@ -1,6 +1,6 @@
 {
     "name": "SJFinder/Repository",
-    "keywords": ["laravel", "repository"]
+    "keywords": ["laravel", "repository"],
     "require": {
         "php": ">=5.4.0",
         "illuminate/config": "5.0.*",
