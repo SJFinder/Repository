@@ -1,5 +1,6 @@
 {
-    "name": "SJFinder/RepoPattern",
+    "name": "SJFinder/Repository",
+    "keywords": ["laravel", "repository"]
     "require": {
         "php": ">=5.4.0",
         "illuminate/config": "5.0.*",
@@ -16,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SJFinder\\RepoPattern\\": "src/"
+            "SJFinder\\": "src/"
         }
     }
 }
