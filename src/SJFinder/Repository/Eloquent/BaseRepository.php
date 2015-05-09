@@ -337,7 +337,9 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
         if (null !== $this->validator) {
             $this->validator->with($attributes)->passOrFail(ValidatorInterface::RULE_CREATE);
         }
-        $model = $this->model->newInstance($attributes);
+
+        $model = $this->app->make($this->modelClass);
+        $model->newInstance($attributes);
         $model->save();
 
         return $this->parseResult($model);
@@ -354,7 +356,6 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
         if ($entity = $this->take(1)->findWhere($attributes)->first()) {
             return $entity;
         }
-        $this->makeModel();
 
         return $this->create($attributes);
     }
@@ -514,6 +515,14 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
+     * Reset Criteria after applyCriteria
+     */
+    public function resetCriteria()
+    {
+        $this->criteria = new Collection;
+    }
+
+    /**
      * Apply criteria in current query
      *
      * @return $this
@@ -534,7 +543,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
                 }
             }
         }
-        $this->criteria = new Collection;
+        $this->resetCriteria();
 
         return $this;
     }
