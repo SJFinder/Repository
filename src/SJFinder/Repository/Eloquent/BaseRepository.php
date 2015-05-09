@@ -232,7 +232,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     public function applyOrder()
     {
         if (empty($this->orders)) {
-            $field = (null === $this->orderField) ? $this->orderField : $this->model->getKeyName();
+            $field = (null !== $this->orderField) ? $this->orderField : $this->model->getKeyName();
             $direction = strtolower($this->orderDirection) == 'asc' ? 'asc' : 'desc';
 
             $this->model = $this->model->orderBy($field, $direction);
