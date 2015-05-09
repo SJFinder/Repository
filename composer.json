@@ -1,5 +1,5 @@
 {
-    "name": "SJFinder/Repository",
+    "name": "sjfinder/repository",
     "keywords": ["laravel", "repository"],
     "require": {
         "php": ">=5.4.0",
