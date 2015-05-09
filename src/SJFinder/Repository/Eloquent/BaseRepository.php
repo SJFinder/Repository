@@ -349,11 +349,12 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      * @param array $attributes
      * @return mixed
      */
-    public function createOrFirst(array $attributes)
+    public function firstOrCreate(array $attributes)
     {
         if ($entity = $this->take(1)->findWhere($attributes)->first()) {
             return $entity;
         }
+        $this->makeModel();
 
         return $this->create($attributes);
     }
@@ -407,8 +408,6 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function with($relations)
     {
-        if (is_string($relations)) $relations = func_get_arg();
-
         $this->model = $this->model->with($relations);
 
         return $this;
@@ -535,6 +534,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
                 }
             }
         }
+        $this->criteria = new Collection;
 
         return $this;
     }

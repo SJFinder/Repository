@@ -78,7 +78,7 @@ interface RepositoryInterface
      * @param array $attributes
      * @return mixed
      */
-    public function createOrFirst(array $attributes);
+    public function firstOrCreate(array $attributes);
 
     /**
      * Update a entity in repository by id
