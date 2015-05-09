@@ -17,8 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SJFinder\\Repository\\": "src/SJFinder/Repository/",
-            "SJFinder\\Models\\": "src/SJFinder/Models/"
+            "SJFinder\\": "src/SJFinder/"
         }
     }
 }
