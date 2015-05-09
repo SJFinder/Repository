@@ -63,11 +63,6 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     protected $criteria;
 
     /**
-     * @var array
-     */
-    protected $orders = [];
-
-    /**
      * @var string
      */
     protected $orderField = null;
@@ -221,7 +216,6 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     public function orderBy($column, $direction = 'asc')
     {
         $direction = strtolower($direction) == 'asc' ? 'asc' : 'desc';
-        $this->orders[] = compact('column', 'direction');
         $this->model = $this->model->orderBy($column, $direction);
 
         return $this;
@@ -232,7 +226,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function applyOrder()
     {
-        if (empty($this->orders)) {
+        if (0 === count($this->model->getQuery()->orders)) {
             $field = (null !== $this->orderField) ? $this->orderField : $this->model->getKeyName();
             $direction = strtolower($this->orderDirection) == 'asc' ? 'asc' : 'desc';
 
