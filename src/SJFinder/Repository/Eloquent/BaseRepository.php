@@ -339,10 +339,9 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
         }
 
         $model = $this->app->make($this->modelClass);
-        $model->newInstance($attributes);
-        $model->save();
+        $entity = $model->create($attributes);
 
-        return $this->parseResult($model);
+        return $this->parseResult($entity);
     }
 
     /**
