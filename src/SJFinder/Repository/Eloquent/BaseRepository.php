@@ -238,6 +238,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
 
     public function getKeyName()
     {
+        if ($this->model instanceof Model) {
+            return $this->model->getKeyName();
+        }
+
         $model = $this->app->make($this->modelClass);
 
         return $model->getKeyName();
