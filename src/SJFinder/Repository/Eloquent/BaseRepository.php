@@ -227,13 +227,20 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     public function applyOrder()
     {
         if (0 === count($this->model->getQuery()->orders)) {
-            $field = (null !== $this->orderField) ? $this->orderField : $this->model->getKeyName();
+            $field = (null !== $this->orderField) ? $this->orderField : $this->getKeyName();
             $direction = strtolower($this->orderDirection) == 'asc' ? 'asc' : 'desc';
 
             $this->model = $this->model->orderBy($field, $direction);
         }
 
         return $this;
+    }
+
+    public function getKeyName()
+    {
+        $model = $this->app->make($this->modelClass);
+
+        return $model->getKeyName();
     }
 
     /**
