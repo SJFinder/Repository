@@ -251,21 +251,31 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      * Retrieve all data of repository
      *
      * @param array $columns
+     * @param bool $isCount
      * @return mixed
+     * @throws RepositoryException
      */
-    public function all(array $columns = ['*'])
+    public function all(array $columns = ['*'], $isCount = false)
     {
-        $this->applyCriteria()->applyOrder();
+        $this->applyCriteria();
 
-        if ($this->model instanceof Builder) {
-            $results = $this->model->get($columns);
+        if (! $isCount) {
+            $this->applyOrder();
+        }
+
+        if ($isCount) {
+            $results = $this->model->count();
         } else {
-            $results = $this->model->all($columns);
+            if ($this->model instanceof Builder) {
+                $results = $this->model->get($columns);
+            } else {
+                $results = $this->model->all($columns);
+            }
         }
 
         $this->makeModel();
 
-        return $this->parseResult($results);
+        return ($isCount) ? $results : $this->parseResult($results);
     }
 
     /**
@@ -309,16 +319,24 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      * @param $field
      * @param $value
      * @param array $columns
+     * @param bool $isCount
      * @return mixed
+     * @throws RepositoryException
      */
-    public function findBy($field, $value, array $columns = ['*'])
+    public function findBy($field, $value, array $columns = ['*'], $isCount = false)
     {
-        $this->applyCriteria()->applyOrder();
-        $model = $this->model->ofValue($field, $value)->get($columns);
+        $this->applyCriteria();
+
+        if (! $isCount) {
+            $this->applyOrder();
+            $model = $this->model->ofValue($field, $value)->get($columns);
+        } else {
+            $counts  = $this->model->ofValue($field, $value)->count();
+        }
 
         $this->makeModel();
 
-        return $this->parseResult($model);
+        return $isCount ? $counts : $this->parseResult($model);
     }
 
     /**
@@ -326,11 +344,17 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      *
      * @param array $where
      * @param array $columns
+     * @param bool $isCount
      * @return mixed
+     * @throws RepositoryException
      */
-    public function findWhere(array $where, array $columns = ['*'])
+    public function findWhere(array $where, array $columns = ['*'], $isCount = false)
     {
-        $this->applyCriteria()->applyOrder();
+        $this->applyCriteria();
+
+        if (! $isCount) {
+            $this->applyOrder();
+        }
 
         foreach($where as $field => $value) {
             if (is_array($value)) {
@@ -340,11 +364,16 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
                 $this->model = $this->model->ofValue($field, $value);
             }
         }
-        $model = $this->model->get($columns);
+
+        if ($isCount) {
+            $counts = $this->model->count();
+        } else {
+            $model = $this->model->get($columns);
+        }
 
         $this->makeModel();
 
-        return $this->parseResult($model);
+        return $isCount ? $counts : $this->parseResult($model);
     }
 
     /**
