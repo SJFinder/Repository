@@ -108,7 +108,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function validator()
     {
-        if (null !== $this->rules and is_array($this->rules)) {
+        if ($this->rules !== null and is_array($this->rules)) {
             $validator = app('Prettus\Validator\LaravelValidator');
 
             if ($validator instanceof ValidatorInterface) {
@@ -156,9 +156,9 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function makePresenter($presenter = null)
     {
-        $presenter = (null !== $presenter) ? $presenter : $this->presenterClass;
+        $presenter = ($presenter !== null) ? $presenter : $this->presenterClass;
 
-        if (null !== $presenter) {
+        if ($presenter !== null) {
             $this->presenter = is_string($presenter) ? $this->app->make($presenter) : $presenter;
 
             if (! $this->presenter instanceof PresenterInterface) {
@@ -178,9 +178,9 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function makeValidator($validator = null)
     {
-        $validator = (null !== $validator) ? $validator : $this->validator();
+        $validator = ($validator !== null) ? $validator : $this->validator();
 
-        if (null !== $validator) {
+        if ($validator !== null) {
             $this->validator = is_string($validator) ? $this->app->make($validator) : $validator;
 
             if (! $this->validator instanceof ValidatorInterface) {
@@ -226,8 +226,8 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function applyOrder()
     {
-        if (0 === count($this->model->getQuery()->orders)) {
-            $field = (null !== $this->orderField) ? $this->orderField : $this->getKeyName();
+        if (count($this->model->getQuery()->orders) === 0) {
+            $field = ($this->orderField !== null) ? $this->orderField : $this->getKeyName();
             $direction = strtolower($this->orderDirection) == 'asc' ? 'asc' : 'desc';
 
             $this->model = $this->model->orderBy($field, $direction);
@@ -384,7 +384,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function create(array $attributes)
     {
-        if (null !== $this->validator) {
+        if ($this->validator !== null) {
             $this->validator->with($attributes)->passOrFail(ValidatorInterface::RULE_CREATE);
         }
 
@@ -423,7 +423,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function update(array $attributes, $id)
     {
-        if (null !== $this->validator) {
+        if ($this->validator !== null) {
             $this->validator->with($attributes)->setId($id)->passOrFail(ValidatorInterface::RULE_UPDATE);
         }
         $_skipPresenter = $this->skipPresenter;

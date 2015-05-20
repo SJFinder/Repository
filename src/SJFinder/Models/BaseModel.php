@@ -48,7 +48,7 @@ abstract class BaseModel extends Model
      */
     private function _where($query, $field, $value, $boolean = 'and')
     {
-        if (empty($field) or null === $value) {
+        if (empty($field) or $value === null) {
             return $query;
         }
 
@@ -72,7 +72,7 @@ abstract class BaseModel extends Model
      */
     public function scopeOfFind($query, $field, $keyword, $boolean = "or")
     {
-        if (empty($field) or null === $keyword or count($keyword) === 0) {
+        if (empty($field) or $keyword === null or count($keyword) === 0) {
             return $query;
         }
         $oper = ($boolean === 'or') ? 'orWhere' : 'where';
@@ -90,7 +90,7 @@ abstract class BaseModel extends Model
      */
     public function scopeOfNot($query, $field, $value)
     {
-        if (empty($field) or null === $value) {
+        if (empty($field) or $value === null) {
             return $query;
         }
 
