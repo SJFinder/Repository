@@ -1,5 +1,6 @@
 <?php namespace SJFinder\Repository\Eloquent;
 
+use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -8,7 +9,6 @@ use SJFinder\Repository\Contracts\CriteriaInterface;
 use SJFinder\Repository\Contracts\PresenterInterface;
 use SJFinder\Repository\Contracts\RepositoryCriteriaInterface;
 use SJFinder\Repository\Contracts\RepositoryInterface;
-use Illuminate\Container\Container as Application;
 use SJFinder\Repository\Exceptions\RepositoryException;
 
 abstract class BaseRepository implements RepositoryInterface, RepositoryCriteriaInterface
@@ -89,7 +89,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     public function __construct(Application $app)
     {
         $this->app = $app;
-        $this->criteria = new Collection;
+        $this->criteria = new Collection();
         $this->makeModel();
         $this->makePresenter();
         $this->makeValidator();
@@ -99,7 +99,9 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     /**
      *
      */
-    public function boot() {}
+    public function boot()
+    {
+    }
 
     /**
      * Specify Validator class name of Prettus\Validator\Contracts\ValidatorInterface
@@ -117,7 +119,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
                 return $validator;
             }
 
-            return null;
+            return;
         }
     }
 
@@ -168,7 +170,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
             return $this->presenter;
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -190,7 +192,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
             return $this->validator;
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -215,7 +217,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function orderBy($column, $direction = 'asc')
     {
-        $direction = strtolower($direction) == 'asc' ? 'asc' : 'desc';
+        $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
         $this->model = $this->model->orderBy($column, $direction);
 
         return $this;
@@ -228,7 +230,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     {
         if (count($this->model->getQuery()->orders) === 0) {
             $field = ($this->orderField !== null) ? $this->orderField : $this->getKeyName();
-            $direction = strtolower($this->orderDirection) == 'asc' ? 'asc' : 'desc';
+            $direction = strtolower($this->orderDirection) === 'asc' ? 'asc' : 'desc';
 
             $this->model = $this->model->orderBy($field, $direction);
         }
@@ -356,7 +358,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
             $this->applyOrder();
         }
 
-        foreach($where as $field => $value) {
+        foreach ($where as $field => $value) {
             if (is_array($value)) {
                 list($field, $condition, $value) = $value;
                 $this->model = $this->model->where($field, $condition, $value);
@@ -413,7 +415,6 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
         return $this->create($attributes);
     }
 
-
     /**
      * Update a entity in repository by id
      *
@@ -441,21 +442,16 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Delete a entity in repository by id
+     * Delete multiple entity in repository
      *
      * @param $id
      * @return int
      */
     public function delete($id)
     {
-        $_skipPresenter = $this->skipPresenter;
-        $this->skipPresenter(true);
-        $model = $this->find($id);
-        $this->skipPresenter($_skipPresenter);
-
         $this->makeModel();
 
-        return $model->delete();
+        return $this->model->destroy($id);
     }
 
     /**
@@ -506,7 +502,6 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     {
         return $this->searchableFields;
     }
-
 
     /**
      * Skip Presenter
@@ -576,7 +571,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function resetCriteria()
     {
-        $this->criteria = new Collection;
+        $this->criteria = new Collection();
     }
 
     /**
@@ -586,15 +581,14 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function applyCriteria()
     {
-        if ($this->skipCriteria === true)
-        {
+        if ($this->skipCriteria === true) {
             return $this;
         }
 
         $criteria = $this->getCriteria();
 
         if ($criteria) {
-            foreach($criteria as $c) {
+            foreach ($criteria as $c) {
                 if ($c instanceof CriteriaInterface) {
                     $this->model = $c->apply($this->model, $this);
                 }
@@ -617,7 +611,4 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
 
         return $result;
     }
-
-
-
 }
