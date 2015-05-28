@@ -1,6 +1,10 @@
-<?php namespace SJFinder\Repository\Presenter;
+<?php
 
+namespace SJFinder\Repository\Presenter;
+
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
@@ -8,8 +12,6 @@ use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\SerializerAbstract;
 use League\Fractal\TransformerAbstract;
 use SJFinder\Repository\Contracts\PresenterInterface;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 abstract class FractalPresenter implements PresenterInterface
 {
@@ -62,8 +64,8 @@ abstract class FractalPresenter implements PresenterInterface
      */
     protected function parseIncludes()
     {
-        $request        = app('Illuminate\Http\Request');
-        $paramIncludes  = config('repository.fractal.params.include', 'include');
+        $request = app('Illuminate\Http\Request');
+        $paramIncludes = config('repository.fractal.params.include', 'include');
 
         if ($request->has($paramIncludes)) {
             $this->fractal->parseIncludes($request->get($paramIncludes));
@@ -73,33 +75,34 @@ abstract class FractalPresenter implements PresenterInterface
     }
 
     /**
-     * Get Serializer
+     * Get Serializer.
      *
      * @return SerializerAbstract
      */
     public function serializer()
     {
-        return null;
+        return;
     }
 
     /**
-     * Transformer
+     * Transformer.
      *
      * @return TransformerAbstract
      */
     abstract public function getTransformer();
 
     /**
-     * Prepare data to present
+     * Prepare data to present.
      *
      * @param $data
+     *
      * @return array
      */
     public function present($data)
     {
         if ($data instanceof EloquentCollection) {
             $this->resource = $this->transformCollection($data);
-        } else if ($data instanceof AbstractPaginator) {
+        } elseif ($data instanceof AbstractPaginator) {
             $this->resource = $this->transformPaginator($data);
         } else {
             $this->resource = $this->transformItem($data);
@@ -110,6 +113,7 @@ abstract class FractalPresenter implements PresenterInterface
 
     /**
      * @param $data
+     *
      * @return Item
      */
     protected function transformItem($data)
@@ -119,6 +123,7 @@ abstract class FractalPresenter implements PresenterInterface
 
     /**
      * @param $data
+     *
      * @return Collection
      */
     protected function transformCollection($data)
@@ -128,6 +133,7 @@ abstract class FractalPresenter implements PresenterInterface
 
     /**
      * @param AbstractPaginator|LengthAwarePaginator|Paginator $paginator
+     *
      * @return Collection
      */
     protected function transformPaginator($paginator)
@@ -138,5 +144,4 @@ abstract class FractalPresenter implements PresenterInterface
 
         return $resource;
     }
-
 }

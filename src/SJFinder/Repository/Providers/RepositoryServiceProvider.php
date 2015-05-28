@@ -1,4 +1,6 @@
-<?php namespace SJFinder\Repository\Providers;
+<?php
+
+namespace SJFinder\Repository\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -8,9 +10,9 @@ class RepositoryServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $configPath = __DIR__ . '/../../../resources/config/repository.php';
+        $configPath = __DIR__.'/../../../resources/config/repository.php';
         $this->publishes([
-            $configPath => config_path('repository.php')
+            $configPath => config_path('repository.php'),
         ], 'config');
         $this->mergeConfigFrom($configPath, 'repository');
     }
@@ -23,5 +25,4 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         return [];
     }
-
 }

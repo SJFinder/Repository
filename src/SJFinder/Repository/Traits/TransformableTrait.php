@@ -1,4 +1,6 @@
-<?php namespace SJFinder\Repository\Traits;
+<?php
+
+namespace SJFinder\Repository\Traits;
 
 trait TransformableTrait
 {

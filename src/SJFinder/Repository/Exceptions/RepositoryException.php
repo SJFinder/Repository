@@ -1,6 +1,8 @@
-<?php namespace SJFinder\Repository\Exceptions;
+<?php
 
-use \Exception;
+namespace SJFinder\Repository\Exceptions;
+
+use Exception;
 
 class RepositoryException extends Exception
 {

@@ -1,4 +1,6 @@
-<?php namespace SJFinder\Models;
+<?php
+
+namespace SJFinder\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -8,10 +10,11 @@ abstract class BaseModel extends Model
     /**
      * Search from manually input.
      *
-     * @param Builder $query
-     * @param string $field
+     * @param Builder      $query
+     * @param string       $field
      * @param string|array $value
-     * @param string $boolean
+     * @param string       $boolean
+     *
      * @return Builder
      */
     public function scopeOfValue($query, $field, $value, $boolean = 'and')
@@ -20,17 +23,18 @@ abstract class BaseModel extends Model
     }
 
     /**
-     * Search from request input
+     * Search from request input.
      *
-     * @param Builder $query
-     * @param string $field
+     * @param Builder      $query
+     * @param string       $field
      * @param string|array $value
-     * @param string $boolean
+     * @param string       $boolean
+     *
      * @return Builder
      */
     public function scopeOfInput($query, $field, $value, $boolean = 'and')
     {
-        if (is_array($value) and ! isset($value[$field])) {
+        if (is_array($value) and !isset($value[$field])) {
             return $query;
         }
 
@@ -38,12 +42,13 @@ abstract class BaseModel extends Model
     }
 
     /**
-     * Generate where query builder
+     * Generate where query builder.
      *
-     * @param Builder $query
-     * @param string $field
+     * @param Builder      $query
+     * @param string       $field
      * @param string|array $value
-     * @param string $boolean
+     * @param string       $boolean
+     *
      * @return Builder
      */
     private function _where($query, $field, $value, $boolean = 'and')
@@ -65,12 +70,13 @@ abstract class BaseModel extends Model
      * Find where statement.
      *
      * @param Builder $query
-     * @param string $field
-     * @param string $keyword
-     * @param string $boolean
+     * @param string  $field
+     * @param string  $keyword
+     * @param string  $boolean
+     *
      * @return Builder
      */
-    public function scopeOfFind($query, $field, $keyword, $boolean = "or")
+    public function scopeOfFind($query, $field, $keyword, $boolean = 'or')
     {
         if (empty($field) or $keyword === null or count($keyword) === 0) {
             return $query;
@@ -84,8 +90,9 @@ abstract class BaseModel extends Model
      * Scope of where not statement.
      *
      * @param Builder $query
-     * @param string $field
-     * @param string $value
+     * @param string  $field
+     * @param string  $value
+     *
      * @return Builder
      */
     public function scopeOfNot($query, $field, $value)
@@ -96,5 +103,4 @@ abstract class BaseModel extends Model
 
         return $query->where($field, '!=', $value);
     }
-
 }

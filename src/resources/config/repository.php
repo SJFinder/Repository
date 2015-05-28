@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Repository Config
  */
@@ -7,7 +8,7 @@ return [
      * Repository Pagination Limit Default
      */
     'pagination' => [
-        'limit' => 15
+        'limit' => 15,
     ],
 
     /*
@@ -15,8 +16,8 @@ return [
      */
     'fractal' => [
         'params' => [
-            'include' => 'include'
-        ]
+            'include' => 'include',
+        ],
     ],
 
     /*
@@ -24,8 +25,8 @@ return [
      */
     'criteria' => [
         'acceptedConditions' => [
-            '=', 'like'
-        ]
+            '=', 'like',
+        ],
     ],
     /*
      * Request Params
@@ -35,6 +36,6 @@ return [
         'searchFields'  => 'searchFields',
         'filter'        => 'filter',
         'orderBy'       => 'orderBy',
-        'sortedBy'      => 'sortedBy'
-    ]
+        'sortedBy'      => 'sortedBy',
+    ],
 ];

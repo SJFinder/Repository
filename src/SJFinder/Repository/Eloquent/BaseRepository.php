@@ -1,4 +1,6 @@
-<?php namespace SJFinder\Repository\Eloquent;
+<?php
+
+namespace SJFinder\Repository\Eloquent;
 
 use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,14 +51,14 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     protected $validator;
 
     /**
-     * Validation Rules
+     * Validation Rules.
      *
      * @var array
      */
     protected $rules = null;
 
     /**
-     * Collection of Criteria
+     * Collection of Criteria.
      *
      * @var Collection
      */
@@ -84,6 +86,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
 
     /**
      * @param Application $app
+     *
      * @throws RepositoryException
      */
     public function __construct(Application $app)
@@ -104,7 +107,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Specify Validator class name of Prettus\Validator\Contracts\ValidatorInterface
+     * Specify Validator class name of Prettus\Validator\Contracts\ValidatorInterface.
      *
      * @return \Illuminate\Foundation\Application|mixed|null
      */
@@ -124,9 +127,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Set Presenter
+     * Set Presenter.
      *
      * @param $presenter
+     *
      * @return $this
      */
     public function setPresenter($presenter)
@@ -137,14 +141,15 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * @return Model
      * @throws RepositoryException
+     *
+     * @return Model
      */
     public function makeModel()
     {
         $model = $this->app->make($this->modelClass);
 
-        if (! $model instanceof Model) {
+        if (!$model instanceof Model) {
             throw new RepositoryException("Class {$this->modelClass} must be an instance of Illuminate\\Database\\Eloquent\\Model");
         }
 
@@ -153,8 +158,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
 
     /**
      * @param null $presenter
-     * @return null|PresenterInterface
+     *
      * @throws RepositoryException
+     *
+     * @return null|PresenterInterface
      */
     public function makePresenter($presenter = null)
     {
@@ -163,7 +170,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
         if ($presenter !== null) {
             $this->presenter = is_string($presenter) ? $this->app->make($presenter) : $presenter;
 
-            if (! $this->presenter instanceof PresenterInterface) {
+            if (!$this->presenter instanceof PresenterInterface) {
                 throw new RepositoryException("Class {$presenter} must be an instance of SJFinder\\Repository\\Contract\\PresenterInterface");
             }
 
@@ -175,8 +182,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
 
     /**
      * @param null $validator
-     * @return null|ValidatorInterface
+     *
      * @throws RepositoryException
+     *
+     * @return null|ValidatorInterface
      */
     public function makeValidator($validator = null)
     {
@@ -185,7 +194,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
         if ($validator !== null) {
             $this->validator = is_string($validator) ? $this->app->make($validator) : $validator;
 
-            if (! $this->validator instanceof ValidatorInterface) {
+            if (!$this->validator instanceof ValidatorInterface) {
                 throw new RepositoryException("Class {$validator} nust be an instance of Prettus\\Validator\\Contracts\\ValidatorInterface");
             }
 
@@ -196,9 +205,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * take limit data of repository
+     * take limit data of repository.
      *
      * @param int $limit
+     *
      * @return $this
      */
     public function take($limit)
@@ -211,8 +221,9 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     /**
      * Add an "order by" clause to the query.
      *
-     * @param  string  $column
-     * @param  string  $direction
+     * @param string $column
+     * @param string $direction
+     *
      * @return $this
      */
     public function orderBy($column, $direction = 'asc')
@@ -250,18 +261,20 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Retrieve all data of repository
+     * Retrieve all data of repository.
      *
      * @param array $columns
-     * @param bool $isCount
-     * @return mixed
+     * @param bool  $isCount
+     *
      * @throws RepositoryException
+     *
+     * @return mixed
      */
     public function all(array $columns = ['*'], $isCount = false)
     {
         $this->applyCriteria();
 
-        if (! $isCount) {
+        if (!$isCount) {
             $this->applyOrder();
         }
 
@@ -283,8 +296,9 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     /**
      * Retrieve all data of repository, paginated.
      *
-     * @param null $limit
+     * @param null  $limit
      * @param array $columns
+     *
      * @return mixed
      */
     public function paginate($limit = null, array $columns = ['*'])
@@ -299,10 +313,11 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Find data by id
+     * Find data by id.
      *
      * @param $id
      * @param array $columns
+     *
      * @return mixed
      */
     public function find($id, array $columns = ['*'])
@@ -316,24 +331,26 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Find data by field and value
+     * Find data by field and value.
      *
      * @param $field
      * @param $value
      * @param array $columns
-     * @param bool $isCount
-     * @return mixed
+     * @param bool  $isCount
+     *
      * @throws RepositoryException
+     *
+     * @return mixed
      */
     public function findBy($field, $value, array $columns = ['*'], $isCount = false)
     {
         $this->applyCriteria();
 
-        if (! $isCount) {
+        if (!$isCount) {
             $this->applyOrder();
             $model = $this->model->ofValue($field, $value)->get($columns);
         } else {
-            $counts  = $this->model->ofValue($field, $value)->count();
+            $counts = $this->model->ofValue($field, $value)->count();
         }
 
         $this->makeModel();
@@ -342,19 +359,21 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Find data by multiple fields
+     * Find data by multiple fields.
      *
      * @param array $where
      * @param array $columns
-     * @param bool $isCount
-     * @return mixed
+     * @param bool  $isCount
+     *
      * @throws RepositoryException
+     *
+     * @return mixed
      */
     public function findWhere(array $where, array $columns = ['*'], $isCount = false)
     {
         $this->applyCriteria();
 
-        if (! $isCount) {
+        if (!$isCount) {
             $this->applyOrder();
         }
 
@@ -379,9 +398,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Create a new entity in repository
+     * Create a new entity in repository.
      *
      * @param array $attributes
+     *
      * @return mixed
      */
     public function create(array $attributes)
@@ -399,9 +419,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Retrieve matched entity or create new one
+     * Retrieve matched entity or create new one.
      *
      * @param array $attributes
+     *
      * @return mixed
      */
     public function firstOrCreate(array $attributes)
@@ -416,10 +437,11 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Update a entity in repository by id
+     * Update a entity in repository by id.
      *
      * @param array $attributes
      * @param $id
+     *
      * @return mixed
      */
     public function update(array $attributes, $id)
@@ -442,9 +464,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Delete multiple entity in repository
+     * Delete multiple entity in repository.
      *
      * @param $id
+     *
      * @return int
      */
     public function delete($id)
@@ -455,9 +478,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Load relations
+     * Load relations.
      *
      * @param $relations
+     *
      * @return this
      */
     public function with($relations)
@@ -468,9 +492,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Set hidden fields
+     * Set hidden fields.
      *
      * @param array $fields
+     *
      * @return this
      */
     public function hidden(array $fields)
@@ -481,9 +506,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Set visible fields
+     * Set visible fields.
      *
      * @param array $fields
+     *
      * @return this
      */
     public function visible(array $fields)
@@ -494,7 +520,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Get searchable fields
+     * Get searchable fields.
      *
      * @return array
      */
@@ -504,9 +530,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Skip Presenter
+     * Skip Presenter.
      *
      * @param bool $status
+     *
      * @return this
      */
     public function skipPresenter($status = true)
@@ -517,9 +544,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Push Criteria for filter the query
+     * Push Criteria for filter the query.
      *
      * @param CriteriaInterface $criteria
+     *
      * @return mixed
      */
     public function pushCriteria(CriteriaInterface $criteria)
@@ -530,7 +558,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Get Collection of Criteria
+     * Get Collection of Criteria.
      *
      * @return mixed
      */
@@ -540,9 +568,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Find data by Criteria
+     * Find data by Criteria.
      *
      * @param CriteriaInterface $criteria
+     *
      * @return mixed
      */
     public function getByCriteria(CriteriaInterface $criteria)
@@ -554,9 +583,10 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Skip Criteria
+     * Skip Criteria.
      *
      * @param bool $status
+     *
      * @return mixed
      */
     public function skipCriteria($status = true)
@@ -567,7 +597,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Reset Criteria after applyCriteria
+     * Reset Criteria after applyCriteria.
      */
     public function resetCriteria()
     {
@@ -575,7 +605,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     }
 
     /**
-     * Apply criteria in current query
+     * Apply criteria in current query.
      *
      * @return $this
      */
@@ -601,11 +631,12 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
 
     /**
      * @param $result
+     *
      * @return mixed
      */
     public function parseResult($result)
     {
-        if (! $this->skipPresenter and $this->presenter instanceof PresenterInterface) {
+        if (!$this->skipPresenter and $this->presenter instanceof PresenterInterface) {
             return $this->presenter->present($result);
         }
 

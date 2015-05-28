@@ -1,4 +1,6 @@
-<?php namespace SJFinder\Repository\Contracts;
+<?php
+
+namespace SJFinder\Repository\Contracts;
 
 interface Transformable
 {
