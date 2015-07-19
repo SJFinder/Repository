@@ -486,6 +486,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      */
     public function with($relations)
     {
+        $relations = is_array($relations) ? $relations : func_get_args();
         $this->model = $this->model->with($relations);
 
         return $this;
