@@ -2,18 +2,18 @@
     "name": "sjfinder/repository",
     "keywords": ["laravel", "repository"],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/config": "5.0.*",
-        "illuminate/support": "5.0.*",
+        "php": ">=5.5.9",
+        "illuminate/config": ">=5.0",
+        "illuminate/support": ">=5.0",
         "league/fractal": "0.12.*",
         "robclancy/presenter": "1.3.*",
         "prettus/laravel-validation": "1.1.*"
     },
     "require-dev": {
         "mockery/mockery": "dev-master",
-        "illuminate/http": "5.0.*",
-        "illuminate/database": "5.0.*",
-        "illuminate/pagination": "5.0.*"
+        "illuminate/http": ">=5.0",
+        "illuminate/database": ">=5.0",
+        "illuminate/pagination": ">=5.0"
     },
     "autoload": {
         "psr-4": {
