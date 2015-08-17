@@ -323,7 +323,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     public function find($id, array $columns = ['*'])
     {
         $this->applyCriteria()->applyOrder();
-        $model = $this->model->find($id, $columns);
+        $model = $this->model->findOrFail($id, $columns);
 
         $this->makeModel();
 
