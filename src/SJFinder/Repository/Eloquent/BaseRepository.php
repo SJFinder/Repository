@@ -380,7 +380,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
         foreach ($where as $field => $value) {
             if (is_array($value)) {
                 list($field, $condition, $search_value) = $value;
-                $this->model = $this->model->where($field, $condition, $searvalue);
+                $this->model = $this->model->where($field, $condition, $search_value);
             } else {
                 $this->model = $this->model->ofValue($field, $value);
             }
