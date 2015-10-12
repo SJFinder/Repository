@@ -480,7 +480,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     /**
      * Load relations.
      *
-     * @param $relations
+     * @param string|array $relation
      *
      * @return this
      */
@@ -488,6 +488,21 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
     {
         $relations = is_array($relations) ? $relations : func_get_args();
         $this->model = $this->model->with($relations);
+
+        return $this;
+    }
+
+    /**
+     * Load relation with specific fields.
+     *
+     * @param string $relation
+     * @param array  $columns
+     *
+     * @return this
+     */
+    public function withCertain($relation, Array $columns = [])
+    {
+        $this->model = $this->model->withCertain($relation, $columns);
 
         return $this;
     }

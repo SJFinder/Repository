@@ -103,4 +103,20 @@ abstract class BaseModel extends Model
 
         return $query->where($field, '!=', $value);
     }
+
+    /**
+     * Find subquery fields.
+     *
+     * @param Builder $query
+     * @param string  $relation
+     * @param array   $columns
+     *
+     * @return Builder
+     */
+    public function scopeWithCertain($query, $relation, Array $columns)
+    {
+        return $query->with([$relation => function ($query) use ($columns) {
+            $query->select($columns);
+        }]);
+    }
 }
