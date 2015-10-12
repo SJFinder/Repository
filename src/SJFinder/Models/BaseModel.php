@@ -113,7 +113,7 @@ abstract class BaseModel extends Model
      *
      * @return Builder
      */
-    public function scopeWithCertain($query, $relation, Array $columns)
+    public function scopeWithCertain($query, $relation, array $columns)
     {
         return $query->with([$relation => function ($query) use ($columns) {
             $query->select($columns);

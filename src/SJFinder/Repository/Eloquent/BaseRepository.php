@@ -500,7 +500,7 @@ abstract class BaseRepository implements RepositoryInterface, RepositoryCriteria
      *
      * @return this
      */
-    public function withCertain($relation, Array $columns = [])
+    public function withCertain($relation, array $columns = [])
     {
         $this->model = $this->model->withCertain($relation, $columns);
 
